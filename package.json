@@ -1,6 +1,6 @@
 {
   "name": "bdo-shopping-cart-package",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "For use with my bdo-crafting-profit projects",
   "main": "dist/index.js",
   "scripts": {

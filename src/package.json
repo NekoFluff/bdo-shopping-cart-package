@@ -1,0 +1,35 @@
+{
+  "name": "bdo-shopping-cart-package",
+  "version": "0.1.0",
+  "description": "For use with my bdo-crafting-profit projects",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx babel src --out-dir dist",
+    "start": "npx babel src --watch --out-dir dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NekoFluff/bdo-shopping-cart-package.git"
+  },
+  "keywords": [
+    "bdo",
+    "shopping",
+    "cart",
+    "craft",
+    "profit",
+    "node"
+  ],
+  "author": "Alexander Nou",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NekoFluff/bdo-shopping-cart-package/issues"
+  },
+  "homepage": "https://github.com/NekoFluff/bdo-shopping-cart-package#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.1",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.11.0"
+  }
+}

@@ -39,7 +39,5 @@
     "nodemon": "^2.0.4",
     "sinon": "^9.0.3"
   },
-  "dependencies": {
-    "@babel/runtime": "^7.11.2"
-  }
+  "dependencies": {}
 }

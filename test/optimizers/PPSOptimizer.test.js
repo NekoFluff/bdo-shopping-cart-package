@@ -1,6 +1,5 @@
-// const PPSOptimizer = require('./../../src/optimizers/PPSOptimizer');
 import PPSOptimizer from './../../src/optimizers/PPSOptimizer';
-import { Item, ItemManager } from './../../src/shoppingCart/ShoppingCartCore';
+import { ItemManager } from './../../src/shoppingCart/ShoppingCartCore';
 import chai from 'chai'
 import recipesSample from '../../test.data/recipesSample'
 import sinon from 'sinon'
@@ -57,21 +56,25 @@ describe('PPSOptimizer class tests', () => {
     it('should return null with no rootItemName provided', () => {
       const optimalActions = optimizer.startCalculatingOptimalActions(null, items, '5f35c46485ccdb8cadac761b')
       expect(optimalActions).to.equal(null)
+      expect(optimizer.calculateOptimalActions.calledOnce).to.equal(false)
     })
     
     it('should return null with no items dictionary provided', () => {
       const optimalActions = optimizer.startCalculatingOptimalActions('Acacia Plywood', null, '5f35c46485ccdb8cadac761b')
       expect(optimalActions).to.equal(null)
+      expect(optimizer.calculateOptimalActions.calledOnce).to.equal(false)
     })
     
     it('should return null with no startingRecipeId provided', () => {
       const optimalActions = optimizer.startCalculatingOptimalActions('Acacia Plywood', items, null)
       expect(optimalActions).to.equal(null)
+      expect(optimizer.calculateOptimalActions.calledOnce).to.equal(false)
     })
-
+    
     it('should work', () => {
       const optimalActions = optimizer.startCalculatingOptimalActions('Acacia Plywood', items, '5f35c46485ccdb8cadac761b')
       expect(optimalActions).to.not.equal(null)
+      expect(optimizer.calculateOptimalActions.calledOnce).to.equal(true)
     })
   })
 

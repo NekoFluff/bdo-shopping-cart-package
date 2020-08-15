@@ -17,7 +17,7 @@ describe('PPSOptimizer class tests', () => {
 
   beforeEach(() => {
     optimizer = new PPSOptimizer()
-    optimizer.setItems(items)
+    optimizer.setItems(items, 'Acacia Plywood')
   })
 
   describe('recipes sample contains Acacia Plywood', () => {
@@ -37,11 +37,13 @@ describe('PPSOptimizer class tests', () => {
     })
 
     it('should return null with no rootItemName provided', () => {
+      optimizer.setItems(items, null)
       const bestActions = optimizer.findOptimalActionSets(null, items)
       expect(bestActions).to.equal(null)
     })
     
     it('should return null with no items dictionary provided', () => {
+      optimizer.setItems(null, 'Acacia Plywood')
       const bestActions = optimizer.findOptimalActionSets('Acacia Plywood')
       expect(bestActions).to.equal(null)
     })
@@ -54,25 +56,27 @@ describe('PPSOptimizer class tests', () => {
     })
 
     it('should return null with no rootItemName provided', () => {
-      const optimalActions = optimizer.startCalculatingOptimalActions(null, items, '5f35c46485ccdb8cadac761b')
+      optimizer.setItems(items, null)
+      const optimalActions = optimizer.startCalculatingOptimalActions(null, '5f35c46485ccdb8cadac761b')
       expect(optimalActions).to.equal(null)
       expect(optimizer.calculateOptimalActions.calledOnce).to.equal(false)
     })
     
     it('should return null with no items dictionary provided', () => {
-      const optimalActions = optimizer.startCalculatingOptimalActions('Acacia Plywood', null, '5f35c46485ccdb8cadac761b')
+      optimizer.setItems(null, 'Acacia Plywood')
+      const optimalActions = optimizer.startCalculatingOptimalActions('Acacia Plywood', '5f35c46485ccdb8cadac761b')
       expect(optimalActions).to.equal(null)
       expect(optimizer.calculateOptimalActions.calledOnce).to.equal(false)
     })
     
     it('should return null with no startingRecipeId provided', () => {
-      const optimalActions = optimizer.startCalculatingOptimalActions('Acacia Plywood', items, null)
+      const optimalActions = optimizer.startCalculatingOptimalActions('Acacia Plywood', null)
       expect(optimalActions).to.equal(null)
       expect(optimizer.calculateOptimalActions.calledOnce).to.equal(false)
     })
     
     it('should work', () => {
-      const optimalActions = optimizer.startCalculatingOptimalActions('Acacia Plywood', items, '5f35c46485ccdb8cadac761b')
+      const optimalActions = optimizer.startCalculatingOptimalActions('Acacia Plywood', '5f35c46485ccdb8cadac761b')
       expect(optimalActions).to.not.equal(null)
       expect(optimizer.calculateOptimalActions.calledOnce).to.equal(true)
     })
@@ -106,7 +110,7 @@ describe('PPSOptimizer class tests', () => {
   describe('calculateOptimalActions function test', () => {
     it('should return the already calculated optimal actions dictionary', () => {
       let optimalActions = {'Acacia Plywood': 'Action'}
-      const optimalActionsResult = optimizer.calculateOptimalActions(items['Acacia Plywood'], '5f35c46485ccdb8cadac761b', optimalActions)
+      const optimalActionsResult = optimizer.calculateOptimalActions('Acacia Plywood', '5f35c46485ccdb8cadac761b', optimalActions)
       expect(optimalActionsResult).to.be.equal(optimalActions)
       expect(Object.keys(optimalActionsResult).length).to.equal(1)
     })
@@ -120,7 +124,7 @@ describe('PPSOptimizer class tests', () => {
 
     it('should work', () => {
       let optimalActions = {}
-      const optimalActionsResult = optimizer.calculateOptimalActions(items['Acacia Plywood'], '5f35c46485ccdb8cadac761b', optimalActions)
+      const optimalActionsResult = optimizer.calculateOptimalActions('Acacia Plywood', '5f35c46485ccdb8cadac761b', optimalActions)
       expect(optimalActionsResult['Acacia Plywood']['Buy']['monetaryCost']).to.equal(17100)
       expect(optimalActionsResult['Acacia Plywood']['Buy']['time']).to.equal(0)
       expect(optimalActionsResult['Acacia Plywood']['Buy']['recipe']).to.equal(null)

@@ -1,8 +1,13 @@
 import ProfitCalculator from '../shoppingCart/ShoppingCartProfitCalculator';
 class PPSOptimizer {
 
-  constructor() {
-    this.bestRecipeActions = null // {recipe: recipe, optimalActions: this.optimalActions}
+  constructor(items, rootItemName) {
+    this.setItems(items, rootItemName)
+  }
+
+  setItems(items, rootItemName) {
+    this.items = items
+    this.rootItemName = rootItemName
   }
 
   /**
@@ -10,32 +15,28 @@ class PPSOptimizer {
    * @param {string} rootItemName Name of the main product being produced
    * @param {object} items {key: item name, value: Item Object found in recipesDashboard.jsx}
    */
-  findOptimalActionSets(rootItemName, items) {
-    if (rootItemName == null || items == null) return null;
+  findOptimalActionSets() {
+    if (this.rootItemName == null || this.items == null) return null;
 
-    this.bestRecipeActions = {}
-    const rootItem = items[rootItemName]
+    const bestRecipeActions = {}
+    const rootItem = this.items[this.rootItemName]
 
     for (const [recipeId, recipe] of Object.entries(rootItem.recipes)) {
-      this.startCalculatingOptimalActions(rootItemName, items, recipeId)
-
-      if (this.bestRecipeActions == null) {
-        this.bestRecipeActions = {} 
-      }
-      this.bestRecipeActions[recipeId] = {recipe: recipe, optimalActions: this.optimalActions}
+      this.startCalculatingOptimalActions(this.rootItemName, recipeId)
+      bestRecipeActions[recipeId] = {recipe: recipe, optimalActions: this.optimalActions}
     }
 
-    return this.bestRecipeActions
+    return bestRecipeActions
   }
 
-  startCalculatingOptimalActions(rootItemName, items, startingRecipeId) {
+  startCalculatingOptimalActions(itemName, startingRecipeId) {
     this.optimalActions = {}
 
-    if (rootItemName == null || items == null || startingRecipeId == null) { 
+    if (itemName == null || this.items == null || startingRecipeId == null) { 
       return null; 
     }
-    this.items = items
-    this.optimalActions = this.calculateOptimalActions(this.items[rootItemName], startingRecipeId)
+    
+    this.optimalActions = this.calculateOptimalActions(itemName, startingRecipeId)
     return this.optimalActions
   }
   
@@ -57,28 +58,25 @@ class PPSOptimizer {
       yield* this.sequenceGenerator(n, arr, i+1)
    }
 
-   setItems(items) {
-     this.items = items
-   }
-
    /**
     * 
     * @param {object} item 
     * @param {string} recipeRestriction Must choose this recipe
     * @param {object} optimalActions 
     */
-  calculateOptimalActions(item, recipeRestriction = null, optimalActions = {}) {
-    if (item == null) return optimalActions;
-    
+  calculateOptimalActions(itemName, recipeRestriction = null, optimalActions = {}) {
+    if (itemName == null) return optimalActions;
+    const item = this.items[itemName]
+
     // If the calculations were already performed, just return those.
-    if (optimalActions[item.name] != null) return optimalActions
+    if (optimalActions[itemName] != null) return optimalActions
 
     // What is the cost to buy this item?
     const itemMarketPrice = item.getMarketPrice()
-    if (optimalActions[item.name] == null) {
-      optimalActions[item.name] = {}
+    if (optimalActions[itemName] == null) {
+      optimalActions[itemName] = {}
       if (!item.isSymbolic)
-        optimalActions[item.name]['Buy'] = new Action(itemMarketPrice, 0, null, null, null)
+        optimalActions[itemName]['Buy'] = new Action(itemMarketPrice, 0, null, null, null)
     }
 
     let possibleCraftOptions = []
@@ -116,7 +114,7 @@ class PPSOptimizer {
             continue
           }
 
-          const result = this.calculateOptimalActions(ingredientItem, null, optimalActions)
+          const result = this.calculateOptimalActions(ingredient['Item Name'], null, optimalActions)
           const action = result[ingredient['Item Name']][buyOrCraft]
           // The provided sequence is impossible. (Cannot craft the ingredient!)
           if (action == null) {

@@ -310,11 +310,8 @@ export class ItemManager {
     // console.log('recipesDashboard.jsx | items after recursive reset', items)
 
     // Step 2: Find the best way to make money using the new decision
-    let optimalActions = this.shoppingCart.optimizer.startCalculatingOptimalActions(
-      itemName,
-      items,
-      recipeId
-    );
+    this.shoppingCart.optimizer.setItems(items, this.officialProductName)
+    let optimalActions = this.shoppingCart.optimizer.startCalculatingOptimalActions(itemName, recipeId);
     // console.log("optimalActions", optimalActions);
     let chosenAction = recipeId == null ? "Buy" : "Craft";
 
@@ -368,10 +365,8 @@ export class ItemManager {
     }
 
     // Get optimal action for each recipe of the root product
-    const bestRecipeActions = this.shoppingCart.optimizer.findOptimalActionSets(
-      this.officialProductName,
-      this.items
-    );
+    this.shoppingCart.optimizer.setItems(this.items, this.officialProductName)
+    const bestRecipeActions = this.shoppingCart.optimizer.findOptimalActionSets();
     const product = this.officialProductName;
     // Choose most optimal recipe and the optimal actions for profit
     let bestActionSet = null;

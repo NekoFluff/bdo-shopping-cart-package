@@ -1,14 +1,14 @@
 // const PPSOptimizer = require('./../../src/optimizers/PPSOptimizer');
 import PPSOptimizer from './../../src/optimizers/PPSOptimizer';
 import { ItemManager } from './../../src/shoppingCart/ShoppingCartCore';
-import chai from 'chai'
+import { expect } from 'chai'
 import recipesSample from '../../test.data/recipesSample'
 import sinon from 'sinon'
-const expect = chai.expect
+import ShoppingCart from './../../src/shoppingCart/ShoppingCart';
 
 describe('ShoppingCart class tests', () => {
   let items
-  let optimizer
+  let shoppingCart
   let itemManager
 
   before(() => {
@@ -17,13 +17,14 @@ describe('ShoppingCart class tests', () => {
 
   beforeEach(() => {
     items = itemManager.parseRecipes(recipesSample)
-    optimizer = new PPSOptimizer()
-    optimizer.setItems(items)
+    shoppingCart = new ShoppingCart()
   })
 
-  describe('recipes sample contains Acacia Plywood', () => {
-    it('should contain the Acacia Plywood recipe', () => {
-      expect(items['Acacia Plywood']).to.not.equal(null)
+  describe('clearCart function test', () => {
+    it('should empty the cart', () => {
+      shoppingCart.cart = ['A', 'B', 'C']
+      shoppingCart.clearCart()
+      expect(shoppingCart.cart.length).to.equal(0)
     })
   })
 })

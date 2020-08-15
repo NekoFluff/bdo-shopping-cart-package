@@ -15,6 +15,9 @@ class ShoppingCart {
     this.cart = []
   }
 
+  setOptimizer(optimizer) {
+    this.optimizer = optimizer
+  }
 
   calculateCosts(itemName, quantity = 1, items) {
     this.clearCart()

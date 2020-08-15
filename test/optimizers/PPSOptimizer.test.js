@@ -69,10 +69,10 @@ describe('PPSOptimizer class tests', () => {
       expect(optimizer.calculateOptimalActions.calledOnce).to.equal(false)
     })
     
-    it('should return null with no startingRecipeId provided', () => {
+    it('should work with no startingRecipeId provided (Buy action)', () => {
       const optimalActions = optimizer.startCalculatingOptimalActions('Acacia Plywood', null)
-      expect(optimalActions).to.equal(null)
-      expect(optimizer.calculateOptimalActions.calledOnce).to.equal(false)
+      expect(optimalActions).to.not.equal(null)
+      expect(optimizer.calculateOptimalActions.calledOnce).to.equal(true)
     })
     
     it('should work', () => {

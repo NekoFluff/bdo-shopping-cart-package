@@ -31,8 +31,8 @@ class PPSOptimizer {
 
   startCalculatingOptimalActions(itemName, startingRecipeId) {
     this.optimalActions = {}
-
-    if (itemName == null || this.items == null || startingRecipeId == null) { 
+    // starting recipe id == null is the 'Buy' action
+    if (itemName == null || this.items == null) { 
       return null; 
     }
     

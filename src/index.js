@@ -6,4 +6,4 @@ const Optimizers = {
   PPSOptimizer: PPSOptimizer
 }
 
-export { Optimizers, ItemManager, ProfitCalculator }
+export default { Optimizers, ItemManager, ProfitCalculator }

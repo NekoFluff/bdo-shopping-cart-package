@@ -23,7 +23,7 @@ class ShoppingCart {
    * Clears the cart and begins recursively adding items to the cart
    * @param {string} itemName 
    * @param {int} quantity 
-   * @param {dict} items 
+   * @param {object} items 
    */
   calculateCosts(itemName, quantity = 1, items) {
     this.clearCart()

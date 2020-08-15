@@ -1,9 +1,8 @@
 import PPSOptimizer from './../../src/optimizers/PPSOptimizer';
 import { ItemManager } from './../../src/shoppingCart/ShoppingCartCore';
-import chai from 'chai'
 import recipesSample from '../../test.data/recipesSample'
+import { expect } from 'chai'
 import sinon from 'sinon'
-const expect = chai.expect
 
 describe('PPSOptimizer class tests', () => {
   let items
@@ -12,10 +11,11 @@ describe('PPSOptimizer class tests', () => {
 
   before(() => {
     itemManager = new ItemManager()
+    items = itemManager.parseRecipes(recipesSample)
+
   })
 
   beforeEach(() => {
-    items = itemManager.parseRecipes(recipesSample)
     optimizer = new PPSOptimizer()
     optimizer.setItems(items)
   })

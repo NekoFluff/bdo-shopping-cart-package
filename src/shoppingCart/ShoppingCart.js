@@ -19,30 +19,36 @@ class ShoppingCart {
     this.optimizer = optimizer
   }
 
+  /**
+   * Clears the cart and begins recursively adding items to the cart
+   * @param {string} itemName 
+   * @param {int} quantity 
+   * @param {dict} items 
+   */
   calculateCosts(itemName, quantity = 1, items) {
     this.clearCart()
-    // for (const [key, _] of Object.entries(items)) {
-    //   items[key]['shoppingCartData'] = [] // Oops everything is wiped...
-    // }
-
-    this.addItem(itemName, quantity, items[itemName].activeRecipeId, null, items)
+    return this.addItem(itemName, quantity, items[itemName].activeRecipeId, null, items)
   }
 
   /**
-   * Adds item to cart if it doesn't exist
+   * Adds item to cart if it doesn't exist. Ues recursion to add ingredients as well.
    * @param {object} item Instance of Item
    * @param {int} quantity The number 
    * @param {string} action Either Craft or Buy. Craft by default
    */
-  addItem(itemName, quantity = 1, selectedRecipeId, parentName = null, items, parentPath) {
-    // Retrieve the recipe from the optimalActions variable in the optimizer
+  addItem(itemName, quantity = 1, selectedRecipeId, parentName = null, items, parentPath = null) {
+    
+    // Ensure the input is valid
     // console.log('ShoppingCart.js | Adding item to shopping cart:', itemName)
+    if (itemName == null) return {currentCart: this.cart, recipePrice: null, cumulativeTimeSpent: null}
     const item = items[itemName]
     if (item == null) return {currentCart: this.cart, recipePrice: 0, cumulativeTimeSpent: 0}
-
     const currentPath = `${parentPath || ''}/${itemName}`
-    const recipe = item.recipes[selectedRecipeId]
+    if (item.usedInRecipes[currentPath] == null) return {currentCart: this.cart, recipePrice: 0, cumulativeTimeSpent: 0}
 
+    // Get the recipe object using the selectedRecipeId string
+    const recipe = item.recipes[selectedRecipeId]
+    
     // Prevent infinite looping
     let action = selectedRecipeId == null ? 'Buy' : 'Craft'
     const recipePathArr = currentPath.split('/')
@@ -50,7 +56,6 @@ class ShoppingCart {
     if (containsLoop) {
       action = 'Buy'
     }
-    if (item.usedInRecipes[currentPath] == null) return {currentCart: this.cart, recipePrice: 0, cumulativeTimeSpent: 0}
 
     // Calculate how many times the player must 'craft' the item
     let craftCount = quantity
@@ -99,6 +104,12 @@ class ShoppingCart {
     console.log(JSON.stringify(this.cart, null, 4))
   }
 
+  /**
+   * @deprecated
+   * @param {object} item Object of type Item
+   * @param {stromg} recipeId The recipe Id you want the price calculated for
+   * @param {object} items All items (From ItemManager.parseRecipes())
+   */
   getPriceForRecipe(item, recipeId, items) {
     const recipe = item.recipes[recipeId]
     if (recipeId == null) return item.getMarketPrice()

@@ -348,7 +348,7 @@ export class ItemManager {
 
   resetToOptimal() {
     if (this.officialProductName == null) {
-      return;
+      return this.items;
     }
 
     // Get optimal action for each recipe of the root product
@@ -392,6 +392,7 @@ export class ItemManager {
       );
     }
 
+    return this.items
   }
 
   /**

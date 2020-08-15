@@ -67,10 +67,33 @@ describe('ShoppingCart class tests', () => {
     beforeEach(() => {
     })
 
-    it('should return an empty cart', () => {
-      const result = shoppingCart.addItem('Acacia Plywood', 100, '5f35c46485ccdb8cadac761b', null, items, null) // {currentCart: this.cart, recipePrice, cumulativeTimeSpent}
-      console.log(result)
+    it('should return an empty cart (invalid name)', () => {
+      const result = shoppingCart.addItem('asdf', 100, '5f35c46485ccdb8cadac761b', null, items, null) // {currentCart: this.cart, recipePrice, cumulativeTimeSpent}
+      expect(result.currentCart.length).to.equal(0)
+    })
 
+    it('should return an empty cart (null name)', () => {
+      const result = shoppingCart.addItem(null, 100, '5f35c46485ccdb8cadac761b', null, items, null) // {currentCart: this.cart, recipePrice, cumulativeTimeSpent}
+      expect(result.currentCart.length).to.equal(0)
+    })
+
+    it('should return an empty cart (negative quantity)', () => {
+      const result = shoppingCart.addItem('Acacia Plywood', -1, '5f35c46485ccdb8cadac761b', null, items, null) // {currentCart: this.cart, recipePrice, cumulativeTimeSpent}
+      expect(result.currentCart.length).to.equal(0)
+    })
+
+    it('should return an empty cart (invalid selectedRecipeId)', () => {
+      const result = shoppingCart.addItem('Acacia Plywood', 100, 'aaaa', null, items, null) // {currentCart: this.cart, recipePrice, cumulativeTimeSpent}
+      expect(result.currentCart.length).to.equal(0)
+    })
+
+    it('should work (even with invalid parent name)', () => {
+      const result = shoppingCart.addItem('Acacia Plywood', 100, '5f35c46485ccdb8cadac761b', 'PARENT NAME', items, null) // {currentCart: this.cart, recipePrice, cumulativeTimeSpent}
+      expect(result.currentCart.length).to.equal(3)
+    })
+
+    it('should work', () => {
+      const result = shoppingCart.addItem('Acacia Plywood', 100, '5f35c46485ccdb8cadac761b', null, items, null) // {currentCart: this.cart, recipePrice, cumulativeTimeSpent}
       expect(result.currentCart[0]['craftCount']).to.equal(2000)
       expect(result.currentCart[0]['cumulativeTimeSpent']).to.equal(0)
       expect(result.currentCart[1]['craftCount']).to.equal(400)

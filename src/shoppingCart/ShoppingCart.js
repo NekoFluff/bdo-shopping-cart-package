@@ -40,7 +40,7 @@ class ShoppingCart {
     
     // Ensure the input is valid
     // console.log('ShoppingCart.js | Adding item to shopping cart:', itemName)
-    if (itemName == null) return {currentCart: this.cart, recipePrice: null, cumulativeTimeSpent: null}
+    if (itemName == null || quantity <= 0) return {currentCart: this.cart, recipePrice: null, cumulativeTimeSpent: null}
     const item = items[itemName]
     if (item == null) return {currentCart: this.cart, recipePrice: 0, cumulativeTimeSpent: 0}
     const currentPath = `${parentPath || ''}/${itemName}`
@@ -48,7 +48,8 @@ class ShoppingCart {
 
     // Get the recipe object using the selectedRecipeId string
     const recipe = item.recipes[selectedRecipeId]
-    
+    if (recipe == null && selectedRecipeId != null) return {currentCart: this.cart, recipePrice: 0, cumulativeTimeSpent: 0}
+
     // Prevent infinite looping
     let action = selectedRecipeId == null ? 'Buy' : 'Craft'
     const recipePathArr = currentPath.split('/')

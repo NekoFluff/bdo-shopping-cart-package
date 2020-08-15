@@ -135,6 +135,7 @@ export class Recipe {
 export class ItemManager {
   constructor() {
     this.items = null
+    this.alreadyResetPath = {} // To keep track of paths reset when calling 'startRecursiveReset'
     this.shoppingCart = new ShoppingCart();
   }
 
@@ -159,18 +160,13 @@ export class ItemManager {
    * @param {arr} recipes
    */
   parseRecipes(recipes) {
+    // console.log("Original Recipes Data: ", recipes);
+    this.items = {};
+    if (recipes == null) return this.items
+
     // Get the official name of the item being produced
     this.officialProductName = null
-    // for (const recipe of recipes) {
-    //   if (recipe['Name'].toLowerCase() == this.props.product.toLowerCase())
-    //     this.officialProductName = recipe['Name']
-    // }
-    if (recipes.length > 0) {
-        this.officialProductName = recipes[0]['Name']
-    }
-
-    this.items = {};
-    // console.log("Original Recipes Data: ", recipes);
+    if (recipes.length > 0) this.officialProductName = recipes[0]['Name']
 
     // Parse Recipe and prep for the display in table format
     for (const recipe of recipes) {
@@ -181,8 +177,6 @@ export class ItemManager {
       }
     }
 
-    // Get optimal actions
-    // this.resetToOptimal();
     return this.items;
   }
 
@@ -192,6 +186,8 @@ export class ItemManager {
    * @param {*} item
    */
   addItem(items, item) {
+    if (item == null || items == null) return
+
     if (items[item.Name] == null) {
       items[item.Name] = new Item(item);
     } else {
@@ -210,19 +206,90 @@ export class ItemManager {
     // console.log('item name', item.Name)
   }
 
+  /**
+   * Starting at the recipe path, remove all references pointing to that item.
+   * In other words, all paths branching off that recipePath provided will have their 'usedInRecipes' dictionary reset
+   * @param {string} itemName // Name of the item
+   * @param {string} recipePath // Path to reach the item (ingredient) 
+   */
   resetRecipePath = (itemName, recipePath) => {
-    const items = this.items;
-    // Step 0: Parse path variables
+
+    // Parse path variables
     let pathArr = recipePath.split('/')
     let parentName = pathArr.length >= 2  ? pathArr[pathArr.length - 2] : null
     if (parentName == "") parentName = null
     let parentPath = pathArr.slice(0, -1).join('/')
     if (parentPath == "") parentPath = null
-    console.log('Reset', pathArr, parentName, parentPath)
-    // let parentRecipeId = this.items[parentName] != null ? this.items[parentName].activeRecipeId : null
+    // console.log('Reset', pathArr, parentName, parentPath)
 
     // Reset items that were dependent on the previous recipe
-    this.startRecursiveReset(items[itemName], items, parentPath);
+    this.startRecursiveReset(this.items[itemName], this.items, parentPath);
+  }
+
+  /**
+   *
+   * @param {object} item Instance of the Item object
+   * @param {object} items Dictionary of Item objects. This is used to referenced Items used in the recipe
+   */
+  startRecursiveReset(item, items, parentPath) {
+    this.alreadyResetPath = {}
+    // console.log("recipesDashboard.jsx | Starting recursive reset:", parentPath, item);
+    return this.recursivelyResetItemUses(item, items, parentPath);
+  }
+
+  /**
+   *
+   * @param {object} item Instance of the Item object
+   * @param {object} items Dictionary of Item objects. This is used to referenced Items used in the recipe
+   */
+  recursivelyResetItemUses(item, items, parentPath = null) {
+    if (item == null || items == null) return
+
+    const recipeId = item.activeRecipeId;
+    const currentPath = `${parentPath || ''}/${item.name}`
+    if (this.alreadyResetPath[currentPath]) {
+      console.log('Already reset', item.name); 
+      return;
+    }
+    if (item.usedInRecipes[currentPath] == null) {
+      console.log('No recipe data available for item/path', item.name, currentPath, JSON.stringify(item.usedInRecipes,null, 4)); 
+      return;
+    }
+    this.alreadyResetPath[currentPath] = true
+
+    if (recipeId != null) {
+      for (let ingredient of item.recipes[recipeId].ingredients) {
+        const ingredientName = ingredient["Item Name"];
+        console.log(
+          "Ingredient reset:",
+          ingredient["Item Name"], parentPath
+        );
+        const newPath = `${currentPath || ''}/${ingredientName}`
+
+        this.recursivelyResetItemUses(items[ingredientName], items, currentPath);
+      }
+    }
+    // items[ingredientName].resetUses(newPath);
+
+    item.resetUses(currentPath)
+    items[item.name] = item;
+  }
+
+  /**
+   * Splits it into /parentPath/parentName
+   * @param {string} path 
+   */
+  splitPath(path) {
+    const pathArr = path.split('/')
+    let currentItemName = pathArr.length >= 2  ? pathArr[pathArr.length - 1] : null
+    if (currentItemName == "") currentItemName = null
+    let parentName = pathArr.length >= 2  ? pathArr[pathArr.length - 2] : null
+    if (parentName == "") parentName = null
+    let parentPath = pathArr.slice(0, -1).join('/')
+    if (parentPath == "") parentPath = null
+    // console.log('Select', pathArr, parentName, parentPath)
+
+    return {parentPath, parentName, currentItemName}
   }
 
   /**
@@ -234,15 +301,11 @@ export class ItemManager {
   selectRecipe = (itemName, recipeId, recipePath) => {
     const items = this.items;
 
-    // Step 0: Parse path variables
-    let pathArr = recipePath.split('/')
-    let parentName = pathArr.length >= 2  ? pathArr[pathArr.length - 2] : null
-    if (parentName == "") parentName = null
-    let parentPath = pathArr.slice(0, -1).join('/')
-    if (parentPath == "") parentPath = null
-    console.log('Select', pathArr, parentName, parentPath)
+    // Step 1: Parse recipe Path and get the parent Recipe Id for later
+    const {parentName, parentPath} = this.splitPath(recipePath)
     let parentRecipeId = this.items[parentName] != null ? this.items[parentName].activeRecipeId : null
-
+    
+    // Step 2: Select the recipe
     items[itemName].selectRecipe(recipeId);
     // console.log('recipesDashboard.jsx | items after recursive reset', items)
 
@@ -252,7 +315,7 @@ export class ItemManager {
       items,
       recipeId
     );
-    console.log("optimalActions", optimalActions);
+    // console.log("optimalActions", optimalActions);
     let chosenAction = recipeId == null ? "Buy" : "Craft";
 
     // Step 3: Using the new optimal actions calculated, update the items object so that the corresponding tables are displayed
@@ -298,53 +361,6 @@ export class ItemManager {
       );
     }
   };
-
-  /**
-   *
-   * @param {object} item Instance of the Item object
-   * @param {object} items Dictionary of Item objects. This is used to referenced Items used in the recipe
-   */
-  startRecursiveReset(item, items, parentPath) {
-    this.alreadyResetPath = {}
-    // console.log("recipesDashboard.jsx | Starting recursive reset:", parentPath, item);
-    return this.recursivelyResetItemUses(item, items, parentPath);
-  }
-
-  /**
-   *
-   * @param {object} item Instance of the Item object
-   * @param {object} items Dictionary of Item objects. This is used to referenced Items used in the recipe
-   */
-  recursivelyResetItemUses(item, items, parentPath = null) {
-    const recipeId = item.activeRecipeId;
-    const currentPath = `${parentPath || ''}/${item.name}`
-    if (this.alreadyResetPath[currentPath]) {
-      console.log('Already reset', item.name); 
-      return;
-    }
-    if (item.usedInRecipes[currentPath] == null) {
-      console.log('No recipe data available for item/path', item.name, currentPath, JSON.stringify(item.usedInRecipes,null, 4)); 
-      return;
-    }
-    this.alreadyResetPath[currentPath] = true
-
-    if (recipeId != null) {
-      for (let ingredient of item.recipes[recipeId].ingredients) {
-        const ingredientName = ingredient["Item Name"];
-        console.log(
-          "Ingredient reset:",
-          ingredient["Item Name"], parentPath
-        );
-        const newPath = `${currentPath || ''}/${ingredientName}`
-
-        this.recursivelyResetItemUses(items[ingredientName], items, currentPath);
-      }
-    }
-    // items[ingredientName].resetUses(newPath);
-
-    item.resetUses(currentPath)
-    items[item.name] = item;
-  }
 
   resetToOptimal() {
     if (this.officialProductName == null) {

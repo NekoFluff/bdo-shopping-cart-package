@@ -112,7 +112,7 @@ class PPSOptimizer {
           if (ingredientItem == null) {
             optimalActions[ingredient['Item Name']] = {}
             optimalActions[ingredient['Item Name']]['Buy'] = new Action(itemMarketPrice, 0, null, null, null)
-            console.log("ERROR: There is no recipe entry for " + ingredient['Item Name'])
+            // console.log("ERROR: There is no recipe entry for " + ingredient['Item Name'])
             continue
           }
 

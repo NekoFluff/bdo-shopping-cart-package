@@ -96,7 +96,7 @@ export class Item {
       delete this.shoppingCartData[recipePath]
     }
 
-    console.log("Reset Use: ", this.name, 'Recipe Path:', recipePath, 'Used in Recipes:', JSON.stringify(this.usedInRecipes, null, 4), JSON.stringify(this.shoppingCartData, null, 4))
+    // console.log("Reset Use: ", this.name, 'Recipe Path:', recipePath, 'Used in Recipes:', JSON.stringify(this.usedInRecipes, null, 4), JSON.stringify(this.shoppingCartData, null, 4))
     if (Object.keys(this.usedInRecipes).length == 0)
       this.activeRecipeId = null;
   };
@@ -252,7 +252,7 @@ export class ItemManager {
       return;
     }
     if (item.usedInRecipes[currentPath] == null) {
-      console.log('No recipe data available for item/path', item.name, currentPath, JSON.stringify(item.usedInRecipes,null, 4)); 
+      // console.log('No recipe data available for item/path', item.name, currentPath, JSON.stringify(item.usedInRecipes,null, 4)); 
       return;
     }
     this.alreadyResetPath[currentPath] = true
@@ -260,10 +260,10 @@ export class ItemManager {
     if (recipeId != null) {
       for (let ingredient of item.recipes[recipeId].ingredients) {
         const ingredientName = ingredient["Item Name"];
-        console.log(
-          "Ingredient reset:",
-          ingredient["Item Name"], parentPath
-        );
+        // console.log(
+        //   "Ingredient reset:",
+        //   ingredient["Item Name"], parentPath
+        // );
         const newPath = `${currentPath || ''}/${ingredientName}`
 
         this.recursivelyResetItemUses(items[ingredientName], items, currentPath);
@@ -392,7 +392,7 @@ export class ItemManager {
         bestActionSet = actionSet;
     }
 
-    console.log("Best Action Set", bestActionSet);
+    // console.log("Best Action Set", bestActionSet);
     let craftAction = bestActionSet["optimalActions"][product]["Craft"]
     if (craftAction != null) {
       this.selectRecipe(

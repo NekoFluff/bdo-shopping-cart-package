@@ -96,7 +96,7 @@ class ShoppingCart {
       // marketData: marketData
     }
     this.cart.push(shoppingCartData) 
-    console.log('Added shopping cart data for ', itemName, shoppingCartData)
+    // console.log('Added shopping cart data for ', itemName, shoppingCartData)
     items[itemName].addShoppingCartData(currentPath, shoppingCartData)
     return {currentCart: this.cart, recipePrice, cumulativeTimeSpent}
   }

@@ -9,7 +9,6 @@ class ShoppingCart {
   constructor(optimizer) {
     this.cart = []
     this.optimizer = new PPSOptimizer()
-
   }
 
   clearCart() {

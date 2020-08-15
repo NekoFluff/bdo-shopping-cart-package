@@ -1,196 +1,8 @@
 import ProfitCalculator from '../shoppingCart/ShoppingCartProfitCalculator';
-
-let sample = {
-  "_id": "5f1a1a47f99c32cda3f4e998",
-  "Action": "Cooking",
-  "Is Symbolic": true,
-  "Name": "Dough",
-  "Quantity Produced": 2.5,
-  "Time to Produce": 0,
-  "Recipe": [
-      {
-          "Item Name": "Wheat Dough",
-          "Amount": 1
-      }
-  ],
-  "Market Data": {
-      "_id": "5f15dac7cea9de4bcc529788",
-      "Last Update Attempt": "2020-03-25 18:16:37.849883",
-      "Last Updated": "2020-03-25 18:16:37.849883",
-      "Market Price": 132,
-      "Name": "Dough"
-  },
-  "Ingredients": [
-      {
-          "_id": "5f1a1a47f99c32cda3f4ea28",
-          "Action": "Shaking          ",
-          "Name": "Wheat Dough",
-          "Quantity Produced": 2.5,
-          "Time to Produce": 6,
-          "Recipe": [
-              {
-                  "Item Name": "Mineral Water",
-                  "Amount": 1
-              },
-              {
-                  "Item Name": "Wheat Flour",
-                  "Amount": 1
-              }
-          ],
-          "Market Data": {
-              "_id": "5f15dac7cea9de4bcc529817",
-              "ID": 7201,
-              "Last Update Attempt": "2020-03-25 18:12:28.759706",
-              "Last Updated": "2020-03-25 18:12:28.759706",
-              "Market Price": 1490,
-              "Name": "Wheat Dough",
-              "Quantity": 29421,
-              "Total Trade Count": 112885498
-          },
-          "depth": 0
-      },
-      {
-          "_id": "5f1a1a47f99c32cda3f4ea27",
-          "Name": "Wheat",
-          "Recipe": null,
-          "Market Data": {
-              "_id": "5f15dac7cea9de4bcc529816",
-              "Last Update Attempt": "2020-03-25 18:12:34.580134",
-              "Last Updated": "2020-03-04 15:27:48.801578",
-              "Market Price": 750,
-              "Name": "Wheat"
-          },
-          "depth": 2
-      },
-      {
-          "_id": "5f1a1a47f99c32cda3f4e9d0",
-          "Name": "Mineral Water",
-          "Recipe": null,
-          "Market Data": {
-              "_id": "5f15dac7cea9de4bcc5297c0",
-              "Last Update Attempt": "2020-03-25 18:12:34.573152",
-              "Last Updated": "2020-03-25 18:12:34.573152",
-              "Market Price": 30,
-              "Name": "Mineral Water"
-          },
-          "depth": 1
-      },
-      {
-          "_id": "5f1a1a47f99c32cda3f4ea29",
-          "Action": "Grinding",
-          "Name": "Wheat Flour",
-          "Quantity Produced": 2.5,
-          "Time to Produce": 6,
-          "Recipe": [
-              {
-                  "Item Name": "Wheat",
-                  "Amount": 1
-              }
-          ],
-          "Market Data": {
-              "_id": "5f15dac7cea9de4bcc529818",
-              "ID": 7101,
-              "Last Update Attempt": "2020-03-25 18:12:31.084649",
-              "Last Updated": "2020-03-25 18:12:31.084649",
-              "Market Price": 1270,
-              "Name": "Wheat Flour",
-              "Quantity": 123391,
-              "Total Trade Count": 252390625
-          },
-          "depth": 1
-      },
-      {
-          "_id": "5f221e6049123c172883a855",
-          "Action": "Delete Me",
-          "Name": "Wheat",
-          "Quantity Produced": 2.5,
-          "Time to Produce": 6,
-          "Recipe": null,
-          "Market Data": {
-              "_id": "5f15dac7cea9de4bcc529816",
-              "Last Update Attempt": "2020-03-25 18:12:34.580134",
-              "Last Updated": "2020-03-04 15:27:48.801578",
-              "Market Price": 750,
-              "Name": "Wheat"
-          },
-          "depth": 2
-      }
-  ]
-}
-
-sample = {
-  "_id": "5f1a1a47f99c32cda3f4e974",
-  "Action": "Chopping",
-  "Name": "Acacia Plywood",
-  "Quantity Produced": 2.5,
-  "Time to Produce": 6,
-  "Recipe": [
-      {
-          "Item Name": "Acacia Plank",
-          "Amount": 10
-      }
-  ],
-  "Market Data": {
-      "_id": "5f15dac7cea9de4bcc529762",
-      "ID": 4681,
-      "Last Update Attempt": "2020-03-25 18:12:18.801806",
-      "Last Updated": "2020-03-25 18:12:18.801806",
-      "Market Price": 15300,
-      "Name": "Acacia Plywood",
-      "Quantity": 5717,
-      "Total Trade Count": 45315927
-  },
-  "Ingredients": [
-      {
-          "_id": "5f1a1a47f99c32cda3f4e973",
-          "Action": "Chopping",
-          "Name": "Acacia Plank",
-          "Quantity Produced": 2.5,
-          "Time to Produce": 6,
-          "Recipe": [
-              {
-                  "Item Name": "Acacia Timber",
-                  "Amount": 5
-              }
-          ],
-          "Market Data": {
-              "_id": "5f15dac7cea9de4bcc529761",
-              "ID": 4680,
-              "Last Update Attempt": "2020-03-25 18:12:16.648140",
-              "Last Updated": "2020-03-25 18:12:16.648140",
-              "Market Price": 3670,
-              "Name": "Acacia Plank",
-              "Quantity": 1942,
-              "Total Trade Count": 35638445
-          },
-          "depth": 0
-      },
-      {
-          "_id": "5f1a1a47f99c32cda3f4e975",
-          "Action": "Gathering",
-          "Name": "Acacia Timber",
-          "Recipe": null,
-          "Market Data": {
-              "_id": "5f15dac7cea9de4bcc529763",
-              "ID": 4609,
-              "Last Update Attempt": "2020-03-25 18:12:17.766127",
-              "Last Updated": "2020-03-25 18:12:17.766127",
-              "Market Price": 1670,
-              "Name": "Acacia Timber",
-              "Quantity": 0,
-              "Total Trade Count": 204655455
-          },
-          "depth": 1
-      }
-  ]
-}
-
-
 class PPSOptimizer {
 
-  constructor(rootItem = null, items = null) {
-    this.bestRecipeActions = null
-    this.startCalculatingOptimalActions(rootItem, items)
+  constructor() {
+    this.bestRecipeActions = null // {recipe: recipe, optimalActions: this.optimalActions}
   }
 
   /**
@@ -199,6 +11,8 @@ class PPSOptimizer {
    * @param {object} items {key: item name, value: Item Object found in recipesDashboard.jsx}
    */
   findOptimalActionSets(rootItemName, items) {
+    if (rootItemName == null || items == null) return null;
+
     this.bestRecipeActions = {}
     const rootItem = items[rootItemName]
 
@@ -216,7 +30,10 @@ class PPSOptimizer {
 
   startCalculatingOptimalActions(rootItemName, items, startingRecipeId) {
     this.optimalActions = {}
-    if (rootItemName == null || items == null) { return; }
+
+    if (rootItemName == null || items == null || startingRecipeId == null) { 
+      return null; 
+    }
     this.items = items
     this.optimalActions = this.calculateOptimalActions(this.items[rootItemName], startingRecipeId)
     return this.optimalActions
@@ -240,6 +57,10 @@ class PPSOptimizer {
       yield* this.sequenceGenerator(n, arr, i+1)
    }
 
+   setItems(items) {
+     this.items = items
+   }
+
    /**
     * 
     * @param {object} item 
@@ -247,6 +68,8 @@ class PPSOptimizer {
     * @param {object} optimalActions 
     */
   calculateOptimalActions(item, recipeRestriction = null, optimalActions = {}) {
+    if (item == null) return optimalActions;
+    
     // If the calculations were already performed, just return those.
     if (optimalActions[item.name] != null) return optimalActions
 
@@ -367,9 +190,6 @@ class PPSOptimizer {
     // console.log('PPSOptimizer.jsx | Action!!!', item.name, bestAction)
     optimalActions[item.name]['Craft'] = bestAction
     
-    
-
-
     return optimalActions
   }
 }

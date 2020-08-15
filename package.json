@@ -4,7 +4,7 @@
   "description": "For use with my bdo-crafting-profit projects",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/mocha test/**/*.js --require @babel/register",
     "build": "npx babel src --out-dir dist",
     "start": "npx babel src --watch --out-dir dist"
   },
@@ -29,7 +29,17 @@
   "devDependencies": {
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.11.1",
+    "@babel/node": "^7.10.5",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/preset-env": "^7.11.0"
+    "@babel/plugin-transform-runtime": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/register": "^7.10.5",
+    "chai": "^4.2.0",
+    "mocha": "^8.1.1",
+    "nodemon": "^2.0.4",
+    "sinon": "^9.0.3"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.11.2"
   }
 }

@@ -7,6 +7,7 @@ export class Item {
    * @param {object} initialItemData e.g {Action: string, Ingredients: [], Market Data: {}, Name: string, Quantity Produced: float, Recipe: [], Time to Produce: float}
    */
   constructor(initialItemData) {
+    if (initialItemData == null) return
     // console.log("Initial Item Data", initialItemData)
     this.name = initialItemData["Name"];
     this.marketData = initialItemData["Market Data"];
@@ -169,7 +170,7 @@ export class ItemManager {
     }
 
     this.items = {};
-    console.log("Original Recipes Data: ", recipes);
+    // console.log("Original Recipes Data: ", recipes);
 
     // Parse Recipe and prep for the display in table format
     for (const recipe of recipes) {
@@ -181,7 +182,7 @@ export class ItemManager {
     }
 
     // Get optimal actions
-    this.resetToOptimal();
+    // this.resetToOptimal();
     return this.items;
   }
 
@@ -346,8 +347,6 @@ export class ItemManager {
   }
 
   resetToOptimal() {
-    console.log("OFFICIAL PRODUCT NAME:", this.officialProductName)
-
     if (this.officialProductName == null) {
       return;
     }

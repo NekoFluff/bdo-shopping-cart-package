@@ -1,6 +1,6 @@
 {
   "name": "bdo-shopping-cart-package",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "For use with my bdo-crafting-profit projects",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -43,6 +43,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "@babel/runtime": "^7.11.2"
+    "@babel/runtime": "^7.11.2",
+    "@types/sinon": "^9.0.4"
   }
 }

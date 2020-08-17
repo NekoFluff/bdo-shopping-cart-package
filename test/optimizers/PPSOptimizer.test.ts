@@ -1,4 +1,4 @@
-import PPSOptimizer from './../../src/optimizers/PPSOptimizer';
+import { PPSOptimizer } from './../../src/optimizers/PPSOptimizer';
 import { ItemManager, Item } from './../../src/shoppingCart/ShoppingCartCore';
 import recipesSample from '../../test.data/recipesSample'
 import { expect } from 'chai'
@@ -7,7 +7,7 @@ import { Action } from '../../src/optimizers/Action';
 
 describe('PPSOptimizer class tests', () => {
   let items : {[key: string]: Item}
-  let optimizer : PPSOptimizer
+  let optimizer : any
   let itemManager : ItemManager
 
   before(() => {

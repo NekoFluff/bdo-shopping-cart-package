@@ -25,10 +25,11 @@ export class ProfitCalculator {
       }
     } 
 
+    if (shoppingCartData == null) return {profit: 0, profitPerSecond: 0}
     let {
       individualPrice,
       cumulativeTimeSpent,
-    } = shoppingCartData!;
+    } = shoppingCartData;
 
     const marketPrice = item.getMarketPrice()
     return {profit: this.calculateProfit(marketPrice, individualPrice), profitPerSecond: this.calculateProfitPerSecond(marketPrice, individualPrice, cumulativeTimeSpent)}

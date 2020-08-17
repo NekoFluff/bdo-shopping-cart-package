@@ -33,7 +33,7 @@ describe('ItemManager class tests', () => {
 
 
   describe('addItem function test', () => {
-    let items
+    let items: any
 
     beforeEach(() => {
       items = {}
@@ -77,7 +77,7 @@ describe('ItemManager class tests', () => {
   })
 
   describe('resetRecipePath function test', () => {
-    let items
+    let items: any
 
     beforeEach(() => {
       items = itemManager.parseRecipes(recipesSample)
@@ -103,7 +103,7 @@ describe('ItemManager class tests', () => {
   })
 
   describe('recursivelyResetItemUses function test', () => {
-    let items 
+    let items: any
 
     beforeEach(() => {
       items = itemManager.parseRecipes(recipesSample)
@@ -156,7 +156,7 @@ describe('ItemManager class tests', () => {
   })
 
   describe('selectRecipe function test', () => {
-    let items 
+    let items: any
 
     beforeEach(() => {
       items = itemManager.parseRecipes(recipesSample)
@@ -232,7 +232,7 @@ describe('ItemManager class tests', () => {
   })
 
   describe('recalculate function test', () => {
-    let items 
+    let items: any
 
     beforeEach(() => {
       items = itemManager.parseRecipes(recipesSample)
@@ -247,7 +247,7 @@ describe('ItemManager class tests', () => {
   })
 
   describe('resetToOptimal function test', () => {
-    let items 
+    let items: any
 
     beforeEach(() => {
       items = itemManager.parseRecipes(recipesSample)
@@ -265,7 +265,7 @@ describe('ItemManager class tests', () => {
   })
 
   describe('cascadeActiveRecipeWithOptimalActions function test', () => {
-    let items 
+    let items: any
 
     beforeEach(() => {
       items = itemManager.parseRecipes(recipesSample)

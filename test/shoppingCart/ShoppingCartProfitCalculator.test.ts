@@ -1,15 +1,16 @@
-import PPSOptimizer from './../../src/optimizers/PPSOptimizer';
+import { PPSOptimizer } from './../../src/optimizers/PPSOptimizer';
 import { ItemManager } from './../../src/shoppingCart/ShoppingCartCore';
 import recipesSample from '../../test.data/recipesSample'
+import recipesSample2 from '../../test.data/recipesSample2'
 import { expect } from 'chai'
 import sinon from 'sinon'
-import ProfitCalculator from './../../src/shoppingCart/ShoppingCartProfitCalculator';
+import { ProfitCalculator } from './../../src/shoppingCart/ShoppingCartProfitCalculator';
 
 
-describe('PPSOptimizer class tests', () => {
-  let items
-  let optimizer
-  let itemManager
+describe('Shopping Cart Calculator class tests', () => {
+  let items: any
+  let optimizer: any
+  let itemManager: any
 
   before(() => {
     itemManager = new ItemManager()
@@ -30,12 +31,46 @@ describe('PPSOptimizer class tests', () => {
       expect(result['profitPerSecond']).to.equal(-35)
     })
 
-    it('should not work', () => {
-      try {
-        const result = ProfitCalculator.calculateProfitValuesForItem(null)
-      } catch (e) {
-        expect(e).to.not.equal(null)
-      }
+    // it('should not work', () => {
+    //   try {
+    //     const result = ProfitCalculator.calculateProfitValuesForItem(null)
+    //   } catch (e) {
+    //     expect(e).to.not.equal(null)
+    //   }
+    // })
+  })
+})
+
+describe('Shopping Cart Calculator class tests 2', () => {
+  let items: any
+  let optimizer: any
+  let itemManager: any
+
+  before(() => {
+    itemManager = new ItemManager()
+    items = itemManager.parseRecipes(recipesSample2)
+    items = itemManager.resetToOptimal() // Get best actions
+    itemManager.shoppingCart.calculateCosts('JIN Magic Crystal - Hystria', 100, items)
+  })
+
+  beforeEach(() => {
+    optimizer = new PPSOptimizer()
+    optimizer.setItems(items)
+  })
+
+  describe('calculateProfitValuesForItem function test', () => {
+    it('should work', () => {
+      const result = ProfitCalculator.calculateProfitValuesForItem(items['JIN Magic Crystal - Hystria'])
+      expect(result['profit']).to.equal(61650000)
+      expect(result['profitPerSecond']).to.equal(10275000)
     })
+
+    // it('should not work', () => {
+    //   try {
+    //     const result = ProfitCalculator.calculateProfitValuesForItem(null)
+    //   } catch (e) {
+    //     expect(e).to.not.equal(null)
+    //   }
+    // })
   })
 })

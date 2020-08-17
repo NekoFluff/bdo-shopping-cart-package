@@ -1,17 +1,16 @@
 // const PPSOptimizer = require('./../../src/optimizers/PPSOptimizer');
-import PPSOptimizer from './../../src/optimizers/PPSOptimizer';
+import { PPSOptimizer } from './../../src/optimizers/PPSOptimizer';
 import { ItemManager, Item } from './../../src/shoppingCart/ShoppingCartCore';
 import { expect } from 'chai'
 import recipesSample from '../../test.data/recipesSample'
 import sinon from 'sinon'
-import ShoppingCart from './../../src/shoppingCart/ShoppingCart';
-import CartEntry from './../../src/shoppingCart/CartEntry';
+import { ShoppingCart } from './../../src/shoppingCart/ShoppingCart';
 import { ActionTaken } from '../../src/optimizers/Action';
 
 describe('ShoppingCart class tests', () => {
   let items: {[key: string]: Item}
-  let shoppingCart: ShoppingCart
-  let itemManager: ItemManager
+  let shoppingCart: any
+  let itemManager: any
 
   before(() => {
     itemManager = new ItemManager()

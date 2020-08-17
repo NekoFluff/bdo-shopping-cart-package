@@ -2,7 +2,7 @@ import { Recipe } from './../shoppingCart/ShoppingCartCore';
 import { Optimizer, OptimalActions } from './OptimizerInterface';
 import { Action, ActionTaken } from './Action';
 
-export default class PPSOptimizer extends Optimizer {
+export class PPSOptimizer extends Optimizer {
 
   /**
    * Find the most optimal actions

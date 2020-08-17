@@ -1,8 +1,8 @@
-import ShoppingCart from "./ShoppingCart";
-import CartEntry from "./CartEntry";
+import { ShoppingCart } from "./ShoppingCart";
+import { CartEntry } from "./CartEntry";
 import { OptimalActions } from "./../optimizers/OptimizerInterface";
 import { ActionTaken } from "../optimizers/Action"
-import PPSOptimizer from './../optimizers/PPSOptimizer';
+import { PPSOptimizer } from './../optimizers/PPSOptimizer';
 
 export class Item {
   name: string;

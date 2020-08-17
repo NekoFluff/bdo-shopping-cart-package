@@ -1,8 +1,8 @@
-import CartEntry from './CartEntry';
+import { CartEntry } from './CartEntry';
 import { Item } from './ShoppingCartCore';
 import { ActionTaken } from '../optimizers/Action';
 
-class ProfitCalculator {
+export class ProfitCalculator {
 
   static valuePackEnabled = false;
   static TAX_PERCENTAGE = 0.65;
@@ -58,9 +58,5 @@ class ProfitCalculator {
     const profitPerSecond = Math.floor(profit / cumulativeTimeSpent);
     return profitPerSecond
   }
-  
-
 }
-
-export default ProfitCalculator
 

@@ -1,16 +1,16 @@
 
 import { Optimizer } from '../optimizers/OptimizerInterface'
 import { Item } from './ShoppingCartCore';
-import CartEntry from './CartEntry';
+import { CartEntry } from './CartEntry';
 import { ActionTaken } from '../optimizers/Action';
 
-interface ShoppingCartCalculation {
+export interface ShoppingCartCalculation {
   currentCart: Array<CartEntry>, 
   recipePrice: number, 
   cumulativeTimeSpent: number 
 }
 
-class ShoppingCart {
+export class ShoppingCart {
   cart: Array<CartEntry>
   optimizer: Optimizer
 
@@ -144,7 +144,3 @@ class ShoppingCart {
     return totalCost
   }
 }
-
-
-
-export default ShoppingCart

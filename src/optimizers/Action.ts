@@ -1,4 +1,4 @@
-import ProfitCalculator from './../shoppingCart/ShoppingCartProfitCalculator';
+import { ProfitCalculator } from './../shoppingCart/ShoppingCartProfitCalculator';
 import { Recipe } from '../shoppingCart/ShoppingCartCore'
 
 export enum ActionTaken {

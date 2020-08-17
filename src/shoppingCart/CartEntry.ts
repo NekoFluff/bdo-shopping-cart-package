@@ -1,5 +1,5 @@
 import { ActionTaken } from '../optimizers/Action'
-export default interface CartEntry {
+export interface CartEntry {
   // name: string,
   action: ActionTaken,
   // recipe: Array<object>, 

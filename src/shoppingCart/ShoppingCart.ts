@@ -43,8 +43,6 @@ export class ShoppingCart {
    */
   calculateCosts(itemName: string, quantity: number = 1, items: {[key: string]: Item}): ShoppingCartCalculation {
     this.clearCart()
-    console.log('items:', items)
-    console.log(itemName)
     return this.addItem(itemName, quantity, items[itemName].activeRecipeId, '', items, '')
   }
 

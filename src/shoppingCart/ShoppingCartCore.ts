@@ -137,13 +137,9 @@ export class Item {
   selectRecipe(recipeId: string) {
     if (this.recipes[recipeId] != null) {
       this.activeRecipeId = recipeId;
-      return true
     } else if (recipeId == '' || recipeId == null) {
       this.activeRecipeId = ''
-      return false
-    } 
-    return false
-    
+    }     
   }
 
   resetUses = (recipePath: string) => {
@@ -385,7 +381,7 @@ export class ItemManager {
           : '';
 
     // Step 2: Select the recipe
-    if (!items[itemName].selectRecipe(recipeId)) return
+    items[itemName].selectRecipe(recipeId)
     // console.log('recipesDashboard.jsx | items after recursive reset', items)
 
     // Step 2: Find the best way to make money using the new decision

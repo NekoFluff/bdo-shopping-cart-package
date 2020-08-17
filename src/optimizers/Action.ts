@@ -30,10 +30,6 @@ export class Action {
   }
 
   calculateProfit(sellPrice: number): number {
-    // let mode = 'pps' //TODO: Switch based on mode of optimization selected
-    // Measure the profit for each action
-    // console.log('[Action] calculateProfit() | Sell price:', sellPrice, 'Cost to obtain (per item):', this.monetaryCost, 'Amount of time (per item):', this.time)
-    // if (mode === 'pps')
     return this.calculatePPS(sellPrice)
   }
 

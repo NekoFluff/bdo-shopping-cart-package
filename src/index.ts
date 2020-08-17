@@ -1,9 +1,7 @@
-import { ItemManager } from './shoppingCart/ShoppingCartCore';
-import PPSOptimizer from './optimizers/PPSOptimizer';
-import ProfitCalculator from './shoppingCart/ShoppingCartProfitCalculator';
-
-const Optimizers = {
-  PPSOptimizer: PPSOptimizer
-}
-
-export default { Optimizers, ItemManager, ProfitCalculator }
+export * from './optimizers/Action';
+export * from './optimizers/OptimizerInterface';
+export * from './optimizers/PPSOptimizer';
+export * from './shoppingCart/CartEntry';
+export * from './shoppingCart/ShoppingCart';
+export * from './shoppingCart/ShoppingCartCore';
+export * from './shoppingCart/ShoppingCartProfitCalculator';

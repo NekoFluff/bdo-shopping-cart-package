@@ -1,9 +1,12 @@
 {
   "name": "bdo-shopping-cart-package",
-  "version": "0.3.0",
+  "version": "0.3.１",
   "description": "For use with my bdo-crafting-profit projects",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "mocha -r ts-node/register 'test/**/*.ts'",
     "test-grep": "mocha -r ts-node/register 'test/**/*.ts' --grep ",

@@ -254,8 +254,8 @@ export class ItemManager {
         item["_id"],
         item["Name"],
         item["Recipe"],
-        item["Quantity Produced"],
-        item["Time to Produce"],
+        item["Quantity Produced"] || 0,
+        item["Time to Produce"] || 0,
         item["Action"]
       );
       if (item["Name"] != this.officialProductName)

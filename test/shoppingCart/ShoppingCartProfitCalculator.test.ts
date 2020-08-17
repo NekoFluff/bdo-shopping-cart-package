@@ -65,6 +65,12 @@ describe('Shopping Cart Calculator class tests 2', () => {
       expect(result['profitPerSecond']).to.equal(10275000)
     })
 
+    it('should work', () => {
+      const result = ProfitCalculator.calculateProfitValuesForItem(items['Forest Fury'])
+      expect(result['profit']).to.equal(-4900000)
+      expect(result['profitPerSecond']).to.equal(-Infinity)
+    })
+
     // it('should not work', () => {
     //   try {
     //     const result = ProfitCalculator.calculateProfitValuesForItem(null)

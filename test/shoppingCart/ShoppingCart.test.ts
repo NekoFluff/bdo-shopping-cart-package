@@ -1,15 +1,17 @@
 // const PPSOptimizer = require('./../../src/optimizers/PPSOptimizer');
 import PPSOptimizer from './../../src/optimizers/PPSOptimizer';
-import { ItemManager } from './../../src/shoppingCart/ShoppingCartCore';
+import { ItemManager, Item } from './../../src/shoppingCart/ShoppingCartCore';
 import { expect } from 'chai'
 import recipesSample from '../../test.data/recipesSample'
 import sinon from 'sinon'
 import ShoppingCart from './../../src/shoppingCart/ShoppingCart';
+import CartEntry from './../../src/shoppingCart/CartEntry';
+import { ActionTaken } from '../../src/optimizers/Action';
 
 describe('ShoppingCart class tests', () => {
-  let items
-  let shoppingCart
-  let itemManager
+  let items: {[key: string]: Item}
+  let shoppingCart: ShoppingCart
+  let itemManager: ItemManager
 
   before(() => {
     itemManager = new ItemManager()
@@ -18,12 +20,12 @@ describe('ShoppingCart class tests', () => {
   })
 
   beforeEach(() => {
-    shoppingCart = new ShoppingCart()
+    shoppingCart = new ShoppingCart(new PPSOptimizer())
   })
 
   describe('clearCart function test', () => {
     it('should empty the cart', () => {
-      shoppingCart.cart = ['A', 'B', 'C']
+      (shoppingCart.cart as any) = ['A', 'B', 'C']
       shoppingCart.clearCart()
       expect(shoppingCart.cart.length).to.equal(0)
     })
@@ -39,27 +41,69 @@ describe('ShoppingCart class tests', () => {
 
   describe('calculateCosts function test', () => {
     beforeEach(() => {
-      shoppingCart.cart = ['A', 'B', 'C']
+      shoppingCart.cart = [ {
+        action: ActionTaken.Buy,
+        craftCount: 0,
+        expectedCount: 0, // Store the total amount that is expected to be crafted
+        individualPrice: 0,
+        cumulativeTimeSpent: 0,
+        for: '' 
+      }, {
+        action: ActionTaken.Buy,
+        craftCount: 0,
+        expectedCount: 0, // Store the total amount that is expected to be crafted
+        individualPrice: 0,
+        cumulativeTimeSpent: 0,
+        for: '' 
+      }, {
+        action: ActionTaken.Buy,
+        craftCount: 0,
+        expectedCount: 0, // Store the total amount that is expected to be crafted
+        individualPrice: 0,
+        cumulativeTimeSpent: 0,
+        for: '' 
+      }]
       shoppingCart.addItem = sinon.spy()
     })
 
     it('should clear the cart and call the additem function', () => {
       const result = shoppingCart.calculateCosts('Acacia Plank', 100, items) // {currentCart: this.cart, recipePrice, cumulativeTimeSpent}
       expect(shoppingCart.cart.length).to.equal(0)
-      expect(shoppingCart.addItem.calledOnce).to.equal(true)
+      expect((shoppingCart.addItem as any).calledOnce).to.equal(true)
     })
   })
 
   describe('calculateCosts function test', () => {
     beforeEach(() => {
-      shoppingCart.cart = ['A', 'B', 'C']
+      shoppingCart.cart = [ {
+        action: ActionTaken.Buy,
+        craftCount: 0,
+        expectedCount: 0, // Store the total amount that is expected to be crafted
+        individualPrice: 0,
+        cumulativeTimeSpent: 0,
+        for: '' 
+      }, {
+        action: ActionTaken.Buy,
+        craftCount: 0,
+        expectedCount: 0, // Store the total amount that is expected to be crafted
+        individualPrice: 0,
+        cumulativeTimeSpent: 0,
+        for: '' 
+      }, {
+        action: ActionTaken.Buy,
+        craftCount: 0,
+        expectedCount: 0, // Store the total amount that is expected to be crafted
+        individualPrice: 0,
+        cumulativeTimeSpent: 0,
+        for: '' 
+      }]
       shoppingCart.addItem = sinon.spy()
     })
 
     it('should clear the cart and call the additem function', () => {
       const result = shoppingCart.calculateCosts('Acacia Plank', 100, items) // {currentCart: this.cart, recipePrice, cumulativeTimeSpent}
       expect(shoppingCart.cart.length).to.equal(0)
-      expect(shoppingCart.addItem.calledOnce).to.equal(true)
+      expect((shoppingCart.addItem as any).calledOnce).to.equal(true)
     })
   })
 

@@ -1,15 +1,11 @@
 // const PPSOptimizer = require('./../../src/optimizers/PPSOptimizer');
-import PPSOptimizer from './../../src/optimizers/PPSOptimizer';
 import { ItemManager } from './../../src/shoppingCart/ShoppingCartCore';
 import { expect } from 'chai'
 import recipesSample from '../../test.data/recipesSample'
 import sinon from 'sinon'
-import ShoppingCart from './../../src/shoppingCart/ShoppingCart';
 
 describe('ItemManager class tests', () => {
-  let items
-  let shoppingCart
-  let itemManager
+  let itemManager: any
 
   before(() => {
 
@@ -91,7 +87,7 @@ describe('ItemManager class tests', () => {
 
     it('should start the recursive reset', () => {
       itemManager.resetRecipePath('Acacia Plywood', '/Acacia Plywood')
-      expect(itemManager.startRecursiveReset.calledOnce).to.equal(true)
+      expect((itemManager.startRecursiveReset as any).calledOnce).to.equal(true)
     })
   })
 
@@ -102,7 +98,7 @@ describe('ItemManager class tests', () => {
 
     it('should start the recursive reset', () => {
       itemManager.startRecursiveReset()
-      expect(itemManager.recursivelyResetItemUses.calledOnce).to.equal(true)
+      expect((itemManager.recursivelyResetItemUses as any).calledOnce).to.equal(true)
     })
   })
 
@@ -169,6 +165,7 @@ describe('ItemManager class tests', () => {
 
     it('should work', () => {
       itemManager.selectRecipe('Acacia Plywood', '5f35c46485ccdb8cadac761b', '/Acacia Plywood')
+      console.log('Used in ITEMS', items['Acacia Plywood'].usedInRecipes['/Acacia Plywood'])
       expect(Object.keys(items['Acacia Plywood'].usedInRecipes).length).to.equal(1)
       expect(items['Acacia Plywood'].usedInRecipes['/Acacia Plywood'].actionTaken).to.equal('Craft')
       expect(Object.keys(items['Acacia Plank'].usedInRecipes).length).to.equal(1)
@@ -257,13 +254,13 @@ describe('ItemManager class tests', () => {
     })
 
     it('should work and choose the most optimal path', () => {
-      expect(items['Acacia Plywood'].activeRecipeId).to.equal(null)
-      expect(items['Acacia Plank'].activeRecipeId).to.equal(null)
-      expect(items['Acacia Timber'].activeRecipeId).to.equal(null)
+      expect(items['Acacia Plywood'].activeRecipeId).to.equal('')
+      expect(items['Acacia Plank'].activeRecipeId).to.equal('')
+      expect(items['Acacia Timber'].activeRecipeId).to.equal('')
       items = itemManager.resetToOptimal();
       expect(items['Acacia Plywood'].activeRecipeId).to.equal('5f35c46485ccdb8cadac761b')
       expect(items['Acacia Plank'].activeRecipeId).to.equal('5f36115282d3cdbd58fa5c95')
-      expect(items['Acacia Timber'].activeRecipeId).to.equal(null)
+      expect(items['Acacia Timber'].activeRecipeId).to.equal('')
     })
   })
 
@@ -275,9 +272,9 @@ describe('ItemManager class tests', () => {
     })
 
     it('should work and choose the most optimal path', () => {
-      expect(items['Acacia Plywood'].activeRecipeId).to.equal(null)
-      expect(items['Acacia Plank'].activeRecipeId).to.equal(null)
-      expect(items['Acacia Timber'].activeRecipeId).to.equal(null)
+      expect(items['Acacia Plywood'].activeRecipeId).to.equal('')
+      expect(items['Acacia Plank'].activeRecipeId).to.equal('')
+      expect(items['Acacia Timber'].activeRecipeId).to.equal('')
       // items = itemManager.cascadeActiveRecipeWithOptimalActions();
       // AAAA I need optimal actions calcuatled from PPSOptimizer or some other optimizer.
     })

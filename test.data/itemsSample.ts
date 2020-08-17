@@ -124,7 +124,7 @@ const itemsSample = {
         parentRecipeId: "5f36115282d3cdbd58fa5c95",
       },
     },
-    activeRecipeId: null,
+    activeRecipeId: '',
     depth: 1,
     overrideMarketPrice: null,
     isSymbolic: false,

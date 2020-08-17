@@ -138,9 +138,12 @@ export class Item {
     if (this.recipes[recipeId] != null) {
       this.activeRecipeId = recipeId;
       return true
-    } else {
+    } else if (recipeId == '' || recipeId == null) {
+      this.activeRecipeId = ''
       return false
-    }
+    } 
+    return false
+    
   }
 
   resetUses = (recipePath: string) => {

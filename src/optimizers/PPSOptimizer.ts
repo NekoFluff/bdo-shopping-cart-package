@@ -1,7 +1,8 @@
 import { Recipe } from "./../shoppingCart/ShoppingCartCore";
 import { Optimizer, OptimalActions } from "./OptimizerInterface";
 import { Action, ActionTaken } from "./Action";
-import { ProfitCalculator } from './../shoppingCart/ShoppingCartProfitCalculator';
+import { ProfitCalculator } from "./../shoppingCart/ShoppingCartProfitCalculator";
+import { getMarketPriceForItem } from "../shoppingCart/ShoppingCartCore";
 
 export class PPSOptimizer extends Optimizer {
   /**
@@ -75,7 +76,7 @@ export class PPSOptimizer extends Optimizer {
     if (optimalActions[itemName] != null) return optimalActions;
 
     // What is the cost to buy this item?
-    const itemMarketPrice = item.getMarketPrice();
+    const itemMarketPrice = getMarketPriceForItem(item);
     if (optimalActions[itemName] == null) {
       optimalActions[itemName] = {
         [ActionTaken.Buy]: new Action(itemMarketPrice, 0, null, null, null),
@@ -117,27 +118,34 @@ export class PPSOptimizer extends Optimizer {
     }
 
     if (possibleCraftOptions.length > 0) {
-      optimalActions[item.name]["Craft"] = this.pickBestCraftingAction(possibleCraftOptions, itemMarketPrice);
+      optimalActions[item.name]["Craft"] = this.pickBestCraftingAction(
+        possibleCraftOptions,
+        itemMarketPrice
+      );
     }
-    
+
     return optimalActions;
   }
 
-  pickBestCraftingAction(possibleCraftOptions: Array<Action>, itemMarketPrice: number) {
+  pickBestCraftingAction(
+    possibleCraftOptions: Array<Action>,
+    itemMarketPrice: number
+  ) {
     return possibleCraftOptions.reduce((bestAction: Action, action: Action) => {
-        
       let bestActionProfit = bestAction.calculateProfit(itemMarketPrice);
       let profit = action.calculateProfit(itemMarketPrice);
 
       // This if statement handles symbolic recipes
-      if (!Number.isFinite(profit)) {profit = -action.monetaryCost;}
-      if (!Number.isFinite(bestActionProfit)) {bestActionProfit = -bestAction.monetaryCost;}
+      if (!Number.isFinite(profit)) {
+        profit = -action.monetaryCost;
+      }
+      if (!Number.isFinite(bestActionProfit)) {
+        bestActionProfit = -bestAction.monetaryCost;
+      }
 
       // We found a better crafting recipe!
-      if (profit > bestActionProfit) 
-        return action
-      else
-        return bestAction
+      if (profit > bestActionProfit) return action;
+      else return bestAction;
     });
   }
 
@@ -186,8 +194,7 @@ export class PPSOptimizer extends Optimizer {
       // The sequence was valid!
       return new Action(
         totalCost / recipe.quantityProduced,
-        (totalTime + recipe.timeToProduce) /
-          recipe.quantityProduced,
+        (totalTime + recipe.timeToProduce) / recipe.quantityProduced,
         recipe,
         recipe_id,
         [...sequence]

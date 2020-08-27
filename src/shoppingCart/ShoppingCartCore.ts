@@ -1,8 +1,23 @@
 import { ShoppingCart } from "./ShoppingCart";
 import { CartEntry } from "./CartEntry";
 import { OptimalActions } from "./../optimizers/OptimizerInterface";
-import { ActionTaken } from "../optimizers/Action"
-import { PPSOptimizer } from './../optimizers/PPSOptimizer';
+import { ActionTaken } from "../optimizers/Action";
+import { PPSOptimizer } from "./../optimizers/PPSOptimizer";
+
+export const getMarketPriceForItem = (item: Item): number => {
+  return (
+    item.overrideMarketPrice ||
+    (item.marketData && item.marketData["Market Price"]) ||
+    0
+  );
+};
+
+export const getShoppingCartDataForItem = (
+  item: Item,
+  recipePath: string
+): CartEntry => {
+  return item.shoppingCartData[recipePath];
+};
 
 export class Item {
   name: string;
@@ -32,7 +47,7 @@ export class Item {
     this.shoppingCartData = {};
     this.recipes = {};
     this.usedInRecipes = {};
-    this.activeRecipeId = '';
+    this.activeRecipeId = "";
     this.depth = initialItemData["depth"] || -1;
     this.overrideMarketPrice = null;
     this.isSymbolic = false; // A symbolic recipe is not meant to be bought
@@ -43,14 +58,6 @@ export class Item {
       initialItemData["Quantity Produced"],
       initialItemData["Time to Produce"],
       initialItemData["Action"]
-    );
-  }
-
-  getMarketPrice(): number {
-    return (
-      this.overrideMarketPrice ||
-      (this.marketData && this.marketData["Market Price"]) ||
-      0
     );
   }
 
@@ -109,7 +116,7 @@ export class Item {
       parentRecipeId,
     };
 
-    if (this.activeRecipeId == '') this.selectRecipe(activeRecipeId);
+    if (this.activeRecipeId == "") this.selectRecipe(activeRecipeId);
     else if (activeRecipeId != this.activeRecipeId) {
       console.log(
         "POSSIBLE ERROR: Recursive recipe OR recipe needs to be bought/crafted at the same time... or crafted using multiple recipes. \nItem name:",
@@ -130,16 +137,12 @@ export class Item {
     this.shoppingCartData[recipePath] = data;
   }
 
-  getShoppingCartData(recipePath: string): CartEntry {
-    return this.shoppingCartData[recipePath];
-  }
-
   selectRecipe(recipeId: string) {
     if (this.recipes[recipeId] != null) {
       this.activeRecipeId = recipeId;
-    } else if (recipeId == '' || recipeId == null) {
-      this.activeRecipeId = ''
-    }     
+    } else if (recipeId == "" || recipeId == null) {
+      this.activeRecipeId = "";
+    }
   }
 
   resetUses = (recipePath: string) => {
@@ -151,7 +154,7 @@ export class Item {
     }
 
     // console.log("Reset Use: ", this.name, 'Recipe Path:', recipePath, 'Used in Recipes:', JSON.stringify(this.usedInRecipes, null, 4), JSON.stringify(this.shoppingCartData, null, 4))
-    if (Object.keys(this.usedInRecipes).length == 0) this.activeRecipeId = '';
+    if (Object.keys(this.usedInRecipes).length == 0) this.activeRecipeId = "";
   };
 
   setDepth(depth: number) {
@@ -322,7 +325,7 @@ export class ItemManager {
     }
     this.alreadyResetPath[currentPath] = true;
 
-    if (recipeId != '') {
+    if (recipeId != "") {
       for (let ingredient of item.recipes[recipeId].ingredients) {
         const ingredientName = ingredient["Item Name"];
         // console.log(
@@ -357,8 +360,8 @@ export class ItemManager {
   } {
     const pathArr = path.split("/");
     let currentItemName =
-      pathArr.length >= 2 ? pathArr[pathArr.length - 1] : '';
-    let parentName = pathArr.length >= 2 ? pathArr[pathArr.length - 2] : '';
+      pathArr.length >= 2 ? pathArr[pathArr.length - 1] : "";
+    let parentName = pathArr.length >= 2 ? pathArr[pathArr.length - 2] : "";
     let parentPath: string = pathArr.slice(0, -1).join("/");
     // console.log('Select', pathArr, parentName, parentPath)
 
@@ -376,12 +379,13 @@ export class ItemManager {
 
     // Step 1: Parse recipe Path and get the parent Recipe Id for later
     const { parentName, parentPath } = this.splitPath(recipePath);
-    let parentRecipeId = this.items[parentName] != null
-          ? this.items[parentName].activeRecipeId
-          : '';
+    let parentRecipeId =
+      this.items[parentName] != null
+        ? this.items[parentName].activeRecipeId
+        : "";
 
     // Step 2: Select the recipe
-    items[itemName].selectRecipe(recipeId)
+    items[itemName].selectRecipe(recipeId);
     // console.log('recipesDashboard.jsx | items after recursive reset', items)
 
     // Step 2: Find the best way to make money using the new decision
@@ -391,7 +395,7 @@ export class ItemManager {
       recipeId
     );
     // console.log("optimalActions", optimalActions);
-    let chosenAction = recipeId == '' ? ActionTaken.Buy : ActionTaken.Craft;
+    let chosenAction = recipeId == "" ? ActionTaken.Buy : ActionTaken.Craft;
 
     // Step 3: Using the new optimal actions calculated, update the items object so that the corresponding tables are displayed
     this.cascadeActiveRecipeWithOptimalActions(
@@ -455,11 +459,12 @@ export class ItemManager {
 
       const oldCraftAction = bestActionSet.optimalActions[product].Craft;
       const newCraftAction = actionSet.optimalActions[product].Craft;
-      const marketPrice = this.items[product].getMarketPrice();
+      const marketPrice = getMarketPriceForItem(this.items[product]);
       if (
-        oldCraftAction != null && newCraftAction != null && 
+        oldCraftAction != null &&
+        newCraftAction != null &&
         oldCraftAction.calculateProfit(marketPrice) <
-        newCraftAction.calculateProfit(marketPrice)
+          newCraftAction.calculateProfit(marketPrice)
       )
         bestActionSet = actionSet;
     }

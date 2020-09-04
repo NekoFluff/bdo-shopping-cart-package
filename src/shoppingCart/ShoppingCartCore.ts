@@ -385,6 +385,9 @@ export class ItemManager {
         : "";
 
     // Step 2: Select the recipe
+    console.log("ITEMS", items);
+    console.log("ITEM NAME", itemName);
+    if (items[itemName] == null) return;
     items[itemName].selectRecipe(recipeId);
     // console.log('recipesDashboard.jsx | items after recursive reset', items)
 

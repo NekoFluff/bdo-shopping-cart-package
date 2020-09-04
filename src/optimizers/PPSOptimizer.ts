@@ -17,6 +17,7 @@ export class PPSOptimizer extends Optimizer {
       [key: string]: { recipe: Recipe; optimalActions: OptimalActions };
     } = {};
     const rootItem = this.items[this.rootItemName];
+    if (rootItem == null) return {};
 
     for (const [recipeId, recipe] of Object.entries(rootItem.recipes)) {
       this.startCalculatingOptimalActions(this.rootItemName, recipeId);

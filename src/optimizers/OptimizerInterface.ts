@@ -1,5 +1,6 @@
 import { Item, Recipe } from './../shoppingCart/ShoppingCartCore';
 import { Action, ActionTaken } from './Action'
+import { Buffs } from '../buffs/Buffs'
 
 export interface OptimalActions {
   [key: string]: {
@@ -18,6 +19,7 @@ export abstract class Optimizer implements OptimizerInterface {
   items : {[key: string]: Item} = {}
   rootItemName : string = ''
   optimalActions : OptimalActions = {}
+  buffs : Buffs = {}
 
   /**
    * 
@@ -32,6 +34,10 @@ export abstract class Optimizer implements OptimizerInterface {
   setItems(items: {[key:  string]: Item}, rootItemName: string) {
     this.items = items
     this.rootItemName = rootItemName
+  }
+
+  setBuffs(buffs: Buffs) {
+    this.buffs = buffs
   }
 
   calculateOptimalActions(itemName: string, recipeRestriction : string, optimalActions : OptimalActions | null): OptimalActions {

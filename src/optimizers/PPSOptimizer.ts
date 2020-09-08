@@ -1,7 +1,6 @@
 import { Recipe } from "./../shoppingCart/ShoppingCartCore";
 import { Optimizer, OptimalActions } from "./OptimizerInterface";
 import { Action, ActionTaken } from "./Action";
-import { ProfitCalculator } from "./../shoppingCart/ShoppingCartProfitCalculator";
 import { getMarketPriceForItem } from "../shoppingCart/ShoppingCartCore";
 
 export class PPSOptimizer extends Optimizer {
@@ -190,12 +189,18 @@ export class PPSOptimizer extends Optimizer {
       }
     }
 
+    totalTime += recipe.timeToProduce
+    if (recipe.action in this.buffs) {
+      totalTime = Math.max(totalTime - this.buffs[recipe.action].timeReduction, 0)
+      // console.log(recipe.action, totalTime)
+    }
+
     // console.log('PPSOptimizer.jsx | ', item.name, generatorResult.value, totalCost / recipe.quantityProduced, recipe)
     if (!sequenceImpossible) {
       // The sequence was valid!
       return new Action(
         totalCost / recipe.quantityProduced,
-        (totalTime + recipe.timeToProduce) / recipe.quantityProduced,
+        totalTime / recipe.quantityProduced,
         recipe,
         recipe_id,
         [...sequence]

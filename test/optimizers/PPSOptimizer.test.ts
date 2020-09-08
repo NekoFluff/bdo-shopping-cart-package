@@ -59,7 +59,6 @@ describe('PPSOptimizer class tests', () => {
     it('should return null with no rootItemName provided', () => {
       optimizer.setItems(items, null)
       const optimalActions = optimizer.startCalculatingOptimalActions(null, '5f35c46485ccdb8cadac761b')
-      console.log('bbbb', optimalActions)
       expect(Object.keys(optimalActions).length).to.equal(0)
       expect((optimizer.calculateOptimalActions as any).calledOnce).to.equal(false)
     })
@@ -130,7 +129,6 @@ describe('PPSOptimizer class tests', () => {
     it('should work', () => {
       let optimalActions = {}
       const optimalActionsResult = optimizer.calculateOptimalActions('Acacia Plywood', '5f35c46485ccdb8cadac761b', optimalActions)
-      console.log("SHOULD WORK", optimalActionsResult)
 
       expect(optimalActionsResult['Acacia Plywood']['Buy']['monetaryCost']).to.equal(17100)
       expect(optimalActionsResult['Acacia Plywood']['Buy']['time']).to.equal(0)
@@ -141,6 +139,34 @@ describe('PPSOptimizer class tests', () => {
       expect(craftAction).to.not.equal(null)
       expect(craftAction!['monetaryCost']).to.equal(36600)
       expect(craftAction!['time']).to.equal(744)
+      expect(craftAction!['recipe']).to.not.equal(null)
+      expect(craftAction!['recipe_id']).to.equal('5f35c46485ccdb8cadac761b')
+      expect(craftAction!['actionSequence']).to.not.equal(null)
+      expect(craftAction!['actionSequence']).to.be.a('array')
+    })
+
+    it('should work', () => {
+      let optimalActions = {}
+      let buffs = {
+        "Chopping": {
+          timeReduction: 100
+        },
+        "Wood Workbench": {
+          timeReduction: 1
+        }
+      }
+      optimizer.setBuffs(buffs)
+      const optimalActionsResult = optimizer.calculateOptimalActions('Acacia Plywood', '5f35c46485ccdb8cadac761b', optimalActions)
+
+      expect(optimalActionsResult['Acacia Plywood']['Buy']['monetaryCost']).to.equal(17100)
+      expect(optimalActionsResult['Acacia Plywood']['Buy']['time']).to.equal(0)
+      expect(optimalActionsResult['Acacia Plywood']['Buy']['recipe']).to.equal(null)
+      expect(optimalActionsResult['Acacia Plywood']['Buy']['recipe_id']).to.equal('')
+      expect(optimalActionsResult['Acacia Plywood']['Buy']['actionSequence']).to.equal(null)
+      const craftAction = optimalActionsResult['Acacia Plywood']['Craft']
+      expect(craftAction).to.not.equal(null)
+      expect(craftAction!['monetaryCost']).to.equal(36600)
+      expect(craftAction!['time']).to.equal(719)
       expect(craftAction!['recipe']).to.not.equal(null)
       expect(craftAction!['recipe_id']).to.equal('5f35c46485ccdb8cadac761b')
       expect(craftAction!['actionSequence']).to.not.equal(null)

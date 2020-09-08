@@ -165,7 +165,6 @@ describe('ItemManager class tests', () => {
 
     it('should work', () => {
       itemManager.selectRecipe('Acacia Plywood', '5f35c46485ccdb8cadac761b', '/Acacia Plywood')
-      console.log('Used in ITEMS', items['Acacia Plywood'].usedInRecipes['/Acacia Plywood'])
       expect(Object.keys(items['Acacia Plywood'].usedInRecipes).length).to.equal(1)
       expect(items['Acacia Plywood'].usedInRecipes['/Acacia Plywood'].actionTaken).to.equal('Craft')
       expect(Object.keys(items['Acacia Plank'].usedInRecipes).length).to.equal(1)

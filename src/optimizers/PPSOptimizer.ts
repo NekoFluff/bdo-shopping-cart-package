@@ -10,13 +10,17 @@ export class PPSOptimizer extends Optimizer {
   findOptimalActionSets(): {
     [key: string]: { recipe: Recipe; optimalActions: OptimalActions };
   } {
-    if (this.rootItemName == null || this.items == null) return {};
+    if (
+      this.rootItemName == null ||
+      this.items == null ||
+      !(this.rootItemName in this.items)
+    )
+      return {};
 
     const bestRecipeActions: {
       [key: string]: { recipe: Recipe; optimalActions: OptimalActions };
     } = {};
     const rootItem = this.items[this.rootItemName];
-    if (rootItem == null) return {};
 
     for (const [recipeId, recipe] of Object.entries(rootItem.recipes)) {
       this.startCalculatingOptimalActions(this.rootItemName, recipeId);
@@ -189,9 +193,12 @@ export class PPSOptimizer extends Optimizer {
       }
     }
 
-    totalTime += recipe.timeToProduce
+    totalTime += recipe.timeToProduce;
     if (recipe.action in this.buffs) {
-      totalTime = Math.max(totalTime - this.buffs[recipe.action].timeReduction, 0)
+      totalTime = Math.max(
+        totalTime - this.buffs[recipe.action].timeReduction,
+        0
+      );
       // console.log(recipe.action, totalTime)
     }
 

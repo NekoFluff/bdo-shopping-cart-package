@@ -194,13 +194,6 @@ export class PPSOptimizer extends Optimizer {
     }
 
     totalTime += recipe.timeToProduce;
-    if (recipe.action in this.buffs) {
-      totalTime = Math.max(
-        totalTime - this.buffs[recipe.action].timeReduction,
-        0
-      );
-      // console.log(recipe.action, totalTime)
-    }
 
     // console.log('PPSOptimizer.jsx | ', item.name, generatorResult.value, totalCost / recipe.quantityProduced, recipe)
     if (!sequenceImpossible) {

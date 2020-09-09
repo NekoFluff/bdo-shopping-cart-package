@@ -1,3 +1,4 @@
+import { Buffs } from "./../buffs/Buffs";
 import { ShoppingCart } from "./ShoppingCart";
 import { CartEntry } from "./CartEntry";
 import { OptimalActions } from "./../optimizers/OptimizerInterface";
@@ -163,6 +164,12 @@ export class Item {
     }
   }
 
+  applyBuffs(buffs: Buffs) {
+    for (const recipe of Object.values(this.recipes)) {
+      recipe.applyBuffs(buffs);
+    }
+  }
+
   printRecipes() {
     console.log("Recipes:", this.recipes);
   }
@@ -173,6 +180,7 @@ export class Recipe {
   ingredients: Array<any>;
   quantityProduced: number;
   timeToProduce: number;
+  originalTimeToProduce: number;
   action: string;
 
   /**
@@ -194,11 +202,21 @@ export class Recipe {
     this.ingredients = ingredients;
     this.quantityProduced = quantityProduced;
     this.timeToProduce = timeToProduce;
+    this.originalTimeToProduce = timeToProduce;
     this.action = action;
   }
 
   printIngredients() {
     console.log("Ingredients:", this.ingredients);
+  }
+
+  applyBuffs(buffs: Buffs) {
+    if (this.action in buffs) {
+      this.timeToProduce = Math.max(
+        this.originalTimeToProduce - buffs[this.action].timeReduction,
+        0
+      );
+    }
   }
 }
 
@@ -239,6 +257,13 @@ export class ItemManager {
     }
 
     return this.items;
+  }
+
+  applyBuffs(buffs: Buffs) {
+    if (!buffs) return;
+    for (const item of Object.values(this.items)) {
+      item.applyBuffs(buffs);
+    }
   }
 
   /**

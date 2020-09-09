@@ -3,6 +3,8 @@ import { Item } from "./ShoppingCartCore";
 import { CartEntry } from "./CartEntry";
 import { ActionTaken } from "../optimizers/Action";
 import { getMarketPriceForItem } from "./ShoppingCartCore";
+import { Buffs } from "./../buffs/Buffs";
+
 export interface ShoppingCartCalculation {
   currentCart: Array<CartEntry>;
   recipePrice: number;

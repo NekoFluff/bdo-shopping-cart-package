@@ -146,7 +146,7 @@ export class Item {
     }
   }
 
-  resetUses = (recipePath: string) => {
+  resetUses = (recipePath?: string) => {
     if (recipePath == null) {
       this.usedInRecipes = {};
     } else {
@@ -472,6 +472,11 @@ export class ItemManager {
       return this.items;
     }
 
+    for (const item of Object.values(this.items)) {
+      item.resetUses();
+      item.selectRecipe("");
+    }
+
     // Get optimal action for each recipe of the root product
     this.shoppingCart.optimizer.setItems(this.items, this.officialProductName);
     const bestRecipeActions = this.shoppingCart.optimizer.findOptimalActionSets();
@@ -497,7 +502,6 @@ export class ItemManager {
         bestActionSet = actionSet;
     }
 
-    // console.log("Best Action Set", bestActionSet);
     if (bestActionSet != null) {
       let craftAction = bestActionSet["optimalActions"][product].Craft;
       if (craftAction != null) {

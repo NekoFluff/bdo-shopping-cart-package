@@ -66,7 +66,7 @@ export class ProfitCalculator {
     cumulativeTimeSpent: number
   ): number {
     const profit = this.calculateProfit(marketPrice, individualPrice);
-    const profitPerSecond = Math.floor(profit / cumulativeTimeSpent);
+    const profitPerSecond = profit / cumulativeTimeSpent;
     return profitPerSecond;
   }
 }

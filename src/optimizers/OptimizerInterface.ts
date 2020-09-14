@@ -4,7 +4,7 @@ import { Buffs } from "../buffs/Buffs";
 
 export interface OptimalActions {
   [key: string]: {
-    [ActionTaken.Buy]: Action;
+    [ActionTaken.Buy]: Action | null;
     [ActionTaken.Craft]: Action | null;
   };
 }

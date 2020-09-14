@@ -83,7 +83,10 @@ export class PPSOptimizer extends Optimizer {
     const itemMarketPrice = getMarketPriceForItem(item);
     if (optimalActions[itemName] == null) {
       optimalActions[itemName] = {
-        [ActionTaken.Buy]: new Action(itemMarketPrice, 0, null, null, null),
+        [ActionTaken.Buy]:
+          item.marketData && item.marketData["Market Price"]
+            ? new Action(itemMarketPrice, 0, null, null, null)
+            : null,
         [ActionTaken.Craft]: null,
       };
     }

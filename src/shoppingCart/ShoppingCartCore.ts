@@ -516,10 +516,10 @@ export class ItemManager {
       let craftAction = bestActionSet["optimalActions"][product].Craft;
       if (craftAction != null) {
         this.selectRecipe(product, craftAction.recipe_id, `/${product}`);
-      } else {
+      } else if (bestActionSet.optimalActions[product].Buy != null) {
         this.selectRecipe(
           product,
-          bestActionSet.optimalActions[product].Buy.recipe_id,
+          bestActionSet.optimalActions[product].Buy!.recipe_id,
           `/${product}`
         );
       }

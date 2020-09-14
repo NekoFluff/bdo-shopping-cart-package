@@ -36,6 +36,7 @@ export class Item {
   depth: number;
   overrideMarketPrice: number | null;
   isSymbolic: boolean;
+  image: string;
 
   /**
    * Create a new Item object
@@ -52,13 +53,15 @@ export class Item {
     this.depth = initialItemData["depth"] || -1;
     this.overrideMarketPrice = null;
     this.isSymbolic = false; // A symbolic recipe is not meant to be bought
+    this.image = initialItemData["Image"];
     this.addRecipe(
       initialItemData["_id"],
       initialItemData["Name"],
       initialItemData["Recipe"],
       initialItemData["Quantity Produced"],
       initialItemData["Time to Produce"],
-      initialItemData["Action"]
+      initialItemData["Action"],
+      initialItemData["Image"]
     );
   }
 
@@ -70,6 +73,7 @@ export class Item {
    * @param quantityProduced
    * @param timeToProduce
    * @param action
+   * @param image
    */
   addRecipe(
     _id: string,
@@ -77,7 +81,8 @@ export class Item {
     recipe: Array<object>,
     quantityProduced: number,
     timeToProduce: number,
-    action: string
+    action: string,
+    image: string
   ) {
     if (this.recipes[_id] == null) {
       this.recipes[_id] = new Recipe(
@@ -85,7 +90,8 @@ export class Item {
         recipe,
         quantityProduced,
         timeToProduce,
-        action
+        action,
+        image
       );
 
       if (action == "Symbolic") {
@@ -182,6 +188,7 @@ export class Recipe {
   timeToProduce: number;
   originalTimeToProduce: number;
   action: string;
+  image: string;
 
   /**
    *
@@ -196,7 +203,8 @@ export class Recipe {
     ingredients: Array<any>,
     quantityProduced: number,
     timeToProduce: number,
-    action: string
+    action: string,
+    image: string
   ) {
     this.productName = productName;
     this.ingredients = ingredients;
@@ -204,6 +212,7 @@ export class Recipe {
     this.timeToProduce = timeToProduce;
     this.originalTimeToProduce = timeToProduce;
     this.action = action;
+    this.image = image;
   }
 
   printIngredients() {
@@ -283,7 +292,8 @@ export class ItemManager {
         item["Recipe"],
         item["Quantity Produced"] || 0,
         item["Time to Produce"] || 0,
-        item["Action"]
+        item["Action"],
+        item["Image"]
       );
       if (item["Name"] != this.officialProductName)
         items[item["Name"]].setDepth(item["depth"]);

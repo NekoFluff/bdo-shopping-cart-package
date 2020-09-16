@@ -550,6 +550,7 @@ export class ItemManager {
     // console.log("Optimal Actions", JSON.stringify(optimalActions, null, 4));
     // console.log("Active Item:", currentItemName);
     // console.log("Action Taken:", actionTaken);
+    // console.log("Parent Path:", parentPath);
     if (items[currentItemName].isSymbolic) actionTaken = ActionTaken.Craft;
     const action = optimalActions[currentItemName][actionTaken];
     if (action == null) return items; // Base case. Return when there is no valid action

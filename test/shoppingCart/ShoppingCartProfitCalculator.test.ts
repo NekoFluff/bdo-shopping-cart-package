@@ -68,8 +68,8 @@ describe("Shopping Cart Calculator class tests 2", () => {
       const result = ProfitCalculator.calculateProfitValuesForItem(
         items["JIN Magic Crystal - Hystria"]
       );
-      expect(result["profit"]).to.equal(61650000);
-      expect(result["profitPerSecond"]).to.equal(10275000);
+      expect(result["profit"]).to.equal(37583333.33333334);
+      expect(result["profitPerSecond"]).to.equal(817028.9855072466);
     });
 
     it("should work", () => {

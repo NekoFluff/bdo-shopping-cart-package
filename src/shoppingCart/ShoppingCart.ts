@@ -76,27 +76,41 @@ export class ShoppingCart {
     parentPath: string = ""
   ): ShoppingCartCalculation {
     // Ensure the input is valid
-    // console.log('ShoppingCart.js | Adding item to shopping cart:', itemName)
+    // console.log("ShoppingCart.js | Adding item to shopping cart:", itemName);
+
     if (itemName == "" || quantity <= 0)
       return { currentCart: this.cart, recipePrice: 0, cumulativeTimeSpent: 0 };
     const item = items[itemName];
+    // console.log("ShoppingCart.js | Valid Item:", item);
+
     if (item == null)
       return { currentCart: this.cart, recipePrice: 0, cumulativeTimeSpent: 0 };
+
     const currentPath = `${parentPath || ""}/${itemName}`;
+    // console.log("ShoppingCart.js | Item Path:", currentPath);
+
     if (item.usedInRecipes[currentPath] == null)
       return { currentCart: this.cart, recipePrice: 0, cumulativeTimeSpent: 0 };
+
     // Get the recipe object using the selectedRecipeId string
     const recipe = item.recipes[selectedRecipeId];
+    // console.log("ShoppingCart.js | Recipe:", recipe);
+
     if (recipe == null && selectedRecipeId != "")
       return { currentCart: this.cart, recipePrice: 0, cumulativeTimeSpent: 0 };
 
     // Prevent infinite looping
-    let action = selectedRecipeId == "" ? ActionTaken.Buy : ActionTaken.Craft;
-    const recipePathArr = currentPath.split("/");
-    const containsLoop = new Set(recipePathArr).size !== recipePathArr.length;
-    if (containsLoop) {
-      action = ActionTaken.Buy;
-    }
+    // let action = selectedRecipeId == "" ? ActionTaken.Buy : ActionTaken.Craft;
+    // const recipePathArr = currentPath.split("/");
+    // const containsLoop = new Set(recipePathArr).size !== recipePathArr.length;
+    // console.log("Shopping Cart - Path:", currentPath);
+
+    // if (containsLoop) {
+    //   console.log("Contains Loop");
+    //   action = ActionTaken.Buy;
+    // }
+
+    const action = item.usedInRecipes[currentPath].actionTaken;
 
     // Calculate how many times the player must 'craft' the item
     let craftCount = quantity;

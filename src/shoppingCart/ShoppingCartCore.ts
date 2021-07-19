@@ -19,6 +19,28 @@ export const getShoppingCartDataForItem = (
 ): CartEntry => {
   return item.shoppingCartData[recipePath];
 };
+export class MarketPrice {
+  ["_id"]?: any;
+  ["ID"]: number;
+  ["Last Update Attempt"]: Date;
+  ["Last Updated"]: Date;
+  ["Market Price"]: number;
+  ["Quantity"]: number;
+  ["Total Trade Count"]: number;
+};
+
+export class RecipeData {
+  ["_id"]?: any;
+  ["Action"]: string;
+  ["Name"]: string;
+  ["Quantity Produced"]: number;
+  ["Time to Produce"]: number;
+  ["Recipe"]: any[];
+  ["Ingredients"]: RecipeData[];
+  ["Market Data"]?: MarketPrice;
+  ["Image"]?: string;
+  ["depth"]?: number;
+};
 
 export class Item {
   name: string;
@@ -247,7 +269,7 @@ export class ItemManager {
    * Parses the information retrieved from the backend to produce the state object 'items'
    * @param {} recipes
    */
-  parseRecipes(recipes: Array<any>): { [key: string]: Item } {
+  parseRecipes(recipes: RecipeData[]): { [key: string]: Item } {
     // console.log("Original Recipes Data: ", recipes);
     this.items = {};
     if (recipes == null) return this.items;
@@ -280,7 +302,7 @@ export class ItemManager {
    * @param items {key: item name, value: Item object}
    * @param item
    */
-  addItem(items: { [key: string]: Item }, item: any) {
+  addItem(items: { [key: string]: Item }, item: RecipeData) {
     if (item == null || items == null) return;
 
     if (items[item["Name"]] == null) {
@@ -293,10 +315,10 @@ export class ItemManager {
         item["Quantity Produced"] || 0,
         item["Time to Produce"] || 0,
         item["Action"],
-        item["Image"]
+        item["Image"] ?? ""
       );
       if (item["Name"] != this.officialProductName)
-        items[item["Name"]].setDepth(item["depth"]);
+        items[item["Name"]].setDepth(item["depth"] ?? -1);
     }
 
     // console.log('item name', item.Name)
@@ -507,7 +529,7 @@ export class ItemManager {
         oldCraftAction != null &&
         newCraftAction != null &&
         oldCraftAction.calculateProfit(marketPrice) <
-          newCraftAction.calculateProfit(marketPrice)
+        newCraftAction.calculateProfit(marketPrice)
       )
         bestActionSet = actionSet;
     }

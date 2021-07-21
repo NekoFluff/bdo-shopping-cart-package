@@ -20,13 +20,13 @@ export const getShoppingCartDataForItem = (
   return item.shoppingCartData[recipePath];
 };
 export class MarketPrice {
-  ["_id"]?: any;
-  ["ID"]: number;
+  ["_id"]?: number;
   ["Last Update Attempt"]: Date;
   ["Last Updated"]: Date;
   ["Market Price"]: number;
   ["Quantity"]: number;
   ["Total Trade Count"]: number;
+  ["Name"]?: string;
 };
 
 export class RecipeData {
